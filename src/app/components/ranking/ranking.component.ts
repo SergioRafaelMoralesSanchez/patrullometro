@@ -43,7 +43,7 @@ export class RankingComponent {
   }
   get ranking () {
     console.log(window)
-    if (window.matchMedia('(max-width: 425px)').matches) {
+    if (window.matchMedia('(max-width: 325px)').matches) {
       return this.rankingOrdenado
     } else {
       return this._ranking
