@@ -1,0 +1,57 @@
+<div class="my-4 grid justify-content-center">
+  <div class="field col-12 sm:col-6 md:col-4 lg:col-3">
+    <label class="block font-bold mb-2" for="patrulla"> Patrulla </label>
+    <p-select
+      id="patrulla"
+      [options]="patrullas"
+      [(ngModel)]="patrulla"
+      optionLabel="name"
+      optionValue="id"
+      placeholder="Selecciona patrulla"
+      class="w-full md:w-56"
+      (onChange)="onPatrullaChange($event)"
+    ></p-select>
+  </div>
+  <div class="field col-12 sm:col-6 md:col-4 lg:col-3">
+    <label class="block font-bold mb-2" for="accion"> Accion </label>
+    <p-select
+      id="accion"
+      [filter]="true"
+      [options]="acciones"
+      [(ngModel)]="accion"
+      optionLabel="descripcion"
+      optionValue="id"
+      placeholder="Selecciona una accion"
+      class="w-full md:w-56"
+      (onChange)="onAccionChange($event)"
+    ></p-select>
+  </div>
+  <div class="mt-4 col-12 md:col-2 lg:col-1 flex justify-content-end">
+    <p-button label="limpiar" (onClick)="clearFilters()"></p-button>
+  </div>
+</div>
+<div class="my-4">
+  <p-table
+    [value]="puntosPatrullas"
+    stripedRows
+    [paginator]="puntosPatrullas.length > 10"
+    [rows]="10"
+  >
+    <ng-template #header>
+      <tr>
+        <th>Patrulla</th>
+        <th>Accion</th>
+        <th>Puntos</th>
+        <th>Fecha</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-punto>
+      <tr>
+        <td>{{ punto.patrulla.name }}</td>
+        <td style="max-width: 50px">{{ punto.accion.descripcion }}</td>
+        <td>{{ punto.accion.puntos }}</td>
+        <td>{{ punto.fecha | date: 'dd/MM/yyyy' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

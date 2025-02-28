@@ -1,0 +1,12 @@
+<div class="container podium">
+  @for (position of ranking; track $index) {
+  <div class="podium__item">
+    <p class="podium__patrulla">
+      <img [src]="'img/' + position.img" class="img-podium" alt="" />
+    </p>
+    <div [class]="'podium__rank ' + position.position">
+      {{ position.puntos }} pts
+    </div>
+  </div>
+  }
+</div>
