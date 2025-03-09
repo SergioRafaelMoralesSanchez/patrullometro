@@ -17,11 +17,11 @@ export class RankingComponent {
 
     puntosPatrullas.forEach(punto => {
       if (rankingMap.has(punto.patrulla.id)) {
-        rankingMap.get(punto.patrulla.id)!.puntos += punto.accion.puntos
+        rankingMap.get(punto.patrulla.id)!.puntos += punto.puntos
       } else {
         rankingMap.set(punto.patrulla.id, {
           img: punto.patrulla.nombreImagen,
-          puntos: punto.accion.puntos,
+          puntos: punto.puntos,
           position: 'first'
         })
       }
@@ -33,7 +33,7 @@ export class RankingComponent {
     this.rankingOrdenado = [
       { ...this.rankingOrdenado[0], position: 'first' },
       { ...this.rankingOrdenado[1], position: 'second' },
-      { ...this.rankingOrdenado[2], position: 'third' },
+      { ...this.rankingOrdenado[2], position: 'third' }
     ]
     this._ranking = [
       { ...this.rankingOrdenado[2], position: 'third' },

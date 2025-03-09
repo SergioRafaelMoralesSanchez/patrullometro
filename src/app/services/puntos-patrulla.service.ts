@@ -25,7 +25,9 @@ export class PuntosPatrullaService extends BaseService<PuntosPatrullasDTO> {
     return puntosPatrulla.map(punto => ({
       accion: acciones.find(accion => accion.id === punto.accion)!,
       patrulla: patrullas.find(patrulla => patrulla.id === punto.patrulla)!,
-      fecha: punto.fecha
+      fecha: punto.fecha,
+      puntos: punto.puntos,
+      descripcionAddicional: punto.descripcionAddicional
     }))
   }
 }

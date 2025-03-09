@@ -48,8 +48,12 @@
     <ng-template #body let-punto>
       <tr>
         <td>{{ punto.patrulla.name }}</td>
-        <td style="max-width: 50px">{{ punto.accion.descripcion }}</td>
-        <td>{{ punto.accion.puntos }}</td>
+        <td style="max-width: 50px">
+          {{ punto.accion.descripcion }}
+          @if(punto.descripcionAddicional){ ({{ punto.descripcionAddicional }})
+          }
+        </td>
+        <td>{{ punto.puntos }}</td>
         <td>{{ punto.fecha }}</td>
       </tr>
     </ng-template>

@@ -2,11 +2,14 @@ export interface PuntosPatrullasDTO {
   id?: string
   patrulla: string
   accion: string
+  puntos: number
+  descripcionAddicional?: string
   fecha: string
 }
 export interface PuntosPatrullas {
   patrulla: Patrulla
   accion: Accion
+  puntos: number
   fecha: string
 }
 
@@ -19,7 +22,5 @@ export interface Patrulla {
 export interface Accion {
   id: string
   descripcion: string
-  tooltip?: string
-  categoria?: string
   puntos: number
 }
