@@ -5,53 +5,24 @@ import {
   PuntosPatrullas,
   PuntosPatrullasDTO
 } from '../components/tabla-puntos/tabla-puntos.model'
+import { AuthService } from './auth.service'
+import { BaseService } from './base-service.service'
 
 @Injectable({
   providedIn: 'root'
 })
-export class PuntosPatrullaService {
-  constructor () {}
-
-  private getPuntosPatrullas (): PuntosPatrullasDTO[] {
-    return [
-      {
-        patrulla: '1',
-        accion: '2',
-        fecha: new Date()
-      },
-      {
-        patrulla: '2',
-        accion: '18',
-        fecha: new Date()
-      },
-      {
-        patrulla: '3',
-        accion: '3',
-        fecha: new Date()
-      },
-      {
-        patrulla: '2',
-        accion: '2',
-        fecha: new Date()
-      },
-      {
-        patrulla: '3',
-        accion: '18',
-        fecha: new Date()
-      },
-      {
-        patrulla: '1',
-        accion: '3',
-        fecha: new Date()
-      }
-    ]
+export class PuntosPatrullaService extends BaseService<PuntosPatrullasDTO> {
+  constructor (authService: AuthService) {
+    super(authService)
+    this.collectionName = 'puntos-patrulla'
   }
 
-  getPuntosPatrullaMapped (
+  async getPuntosPatrullaMapped (
     acciones: Accion[],
     patrullas: Patrulla[]
-  ): PuntosPatrullas[] {
-    return this.getPuntosPatrullas().map(punto => ({
+  ): Promise<PuntosPatrullas[]> {
+    const puntosPatrulla = await this.getAll()
+    return puntosPatrulla.map(punto => ({
       accion: acciones.find(accion => accion.id === punto.accion)!,
       patrulla: patrullas.find(patrulla => patrulla.id === punto.patrulla)!,
       fecha: punto.fecha

@@ -1,33 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Patrulla } from '../components/tabla-puntos/tabla-puntos.model';
+import { Injectable } from '@angular/core'
+import { Patrulla } from '../components/tabla-puntos/tabla-puntos.model'
+import { AuthService } from './auth.service'
+import { BaseService } from './base-service.service'
 
 @Injectable({
   providedIn: 'root'
 })
-export class PatrullasService {
-
-  constructor() { }
-
-  getPatrullas(): Patrulla[] {
-    return [
-      {
-        id: '1',
-        name: 'Fenix',
-        nombreImagen: 'fenix.jpg',
-        numPatrulleros: 6
-      },
-      {
-        id: '2',
-        name: 'Dragones',
-        nombreImagen: 'dragones.jpg',
-        numPatrulleros: 6
-      },
-      {
-        id: '3',
-        name: 'Tigres',
-        nombreImagen: 'tigres.jpg',
-        numPatrulleros: 6
-      }
-    ]
+export class PatrullasService extends BaseService<Patrulla> {
+  constructor (authService: AuthService) {
+    super(authService)
+    this.collectionName = 'patrullas'
   }
 }

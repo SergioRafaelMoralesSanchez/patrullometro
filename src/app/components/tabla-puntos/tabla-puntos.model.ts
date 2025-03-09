@@ -1,18 +1,18 @@
 export interface PuntosPatrullasDTO {
+  id?: string
   patrulla: string
   accion: string
-  fecha: Date
+  fecha: string
 }
 export interface PuntosPatrullas {
   patrulla: Patrulla
   accion: Accion
-  fecha: Date
+  fecha: string
 }
 
 export interface Patrulla {
   id: string
   name: string
-  numPatrulleros: number
   nombreImagen: string
 }
 
