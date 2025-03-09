@@ -13,7 +13,7 @@ import {
 @Component({
   selector: 'app-patrullometro',
   imports: [RankingComponent, TablaPuntosComponent],
-  templateUrl: './patrullometro.component.html',
+  templateUrl: './patrullometro.component.html'
 })
 export class PatrullometroComponent implements OnInit {
   puntosPatrullas: PuntosPatrullas[] = []

@@ -1,3 +1,4 @@
+@if (puntosPatrullas.length) {
 <app-ranking [puntosPatrullas]="puntosPatrullas"></app-ranking>
 
 <app-tabla-puntos
@@ -5,3 +6,9 @@
   [patrullas]="patrullas"
   [puntosPatrullasRaw]="puntosPatrullas"
 ></app-tabla-puntos>
+
+}@else{
+<div class="flex justify-content-center">
+  <img src="img/tropaOrion.jpg" class="w-6 border-round" alt="" />
+</div>
+}
