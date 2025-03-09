@@ -30,54 +30,32 @@ export class BaseService<T> {
   }
 
   async getFirst (): Promise<Nullable<T>> {
-    const user: Nullable<LocalUser> = this.authService.getCurrentUser()
-
-    if (user) {
-      const q = query(
-        collection(this.db, this.collectionName),
-        // where('userId', '==', user.uid)
-      )
-      const querySnapshot = await getDocs(q)
-      const data: T[] = querySnapshot.docs.map(d => ({
-        ...(d.data() as T),
-        id: d.id
-      }))
-      return data[0]
-    }
-    return undefined
+    const q = query(collection(this.db, this.collectionName))
+    const querySnapshot = await getDocs(q)
+    const data: T[] = querySnapshot.docs.map(d => ({
+      ...(d.data() as T),
+      id: d.id
+    }))
+    return data[0]
   }
   async getAll (): Promise<T[]> {
-    const user: Nullable<LocalUser> = this.authService.getCurrentUser()
-
-    if (user) {
-      const q = query(
-        collection(this.db, this.collectionName),
-        // where('userId', '==', user.uid)
-      )
-      const querySnapshot = await getDocs(q)
-      const data: T[] = querySnapshot.docs.map(d => ({
-        ...(d.data() as T),
-        id: d.id
-      }))
-      return data
-    }
-    return []
+    const q = query(collection(this.db, this.collectionName))
+    const querySnapshot = await getDocs(q)
+    const data: T[] = querySnapshot.docs.map(d => ({
+      ...(d.data() as T),
+      id: d.id
+    }))
+    return data
   }
 
   async getAllMapped (): Promise<Map<string, T>> {
-    const user: Nullable<LocalUser> = this.authService.getCurrentUser()
     const data = new Map<string, T>()
 
-    if (user) {
-      const q = query(
-        collection(this.db, this.collectionName),
-        // where('userId', '==', user.uid)
-      )
-      const querySnapshot = await getDocs(q)
-      querySnapshot.docs.forEach(d => {
-        data.set(d.id, d.data() as T)
-      })
-    }
+    const q = query(collection(this.db, this.collectionName))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.docs.forEach(d => {
+      data.set(d.id, d.data() as T)
+    })
     return data
   }
 
