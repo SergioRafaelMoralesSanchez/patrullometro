@@ -1,0 +1,36 @@
+<div class="flex-auto">
+  <label class="block font-bold mb-2" for="locale-user">
+    Patrulla
+  </label>
+  <p-select [options]="patrullas" [(ngModel)]="patrulla" optionLabel="name" optionValue="id"
+    placeholder="Selecciona patrulla" class="w-full md:w-56" />
+</div>
+<div class="flex-auto">
+  <label class="block font-bold mb-2" for="locale-user">
+    Accion
+  </label>
+  <p-select [filter]="true" [options]="acciones" [(ngModel)]="accion" optionLabel="descripcion"
+   (ngModelChange)="accionChange($event)"
+    placeholder="Selecciona accion" class="w-full md:w-56" />
+</div>
+<div class="flex-auto">
+  <label class="block font-bold mb-2" for="locale-user">
+    descripcionAddicional
+  </label>
+  <input [(ngModel)]="descripcionAddicional"   />
+</div>
+<div class="flex-auto">
+  <label class="block font-bold mb-2" for="locale-user">
+    Puntos
+  </label>
+  <p-inputnumber [(ngModel)]="puntos"   />
+</div>
+<div class="flex-auto">
+  <label class="block font-bold mb-2" for="locale-user">
+    Multiplicador
+  </label>
+  <p-inputnumber [(ngModel)]="numero"   />
+</div>
+
+
+<p-button (onClick)="sendPuntosPatrulla()" label="Submit" />
