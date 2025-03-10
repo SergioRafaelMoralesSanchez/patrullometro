@@ -1,0 +1,92 @@
+@if(puntosForm){
+<form [formGroup]="puntosForm">
+  <div class="formgrid grid">
+    <div class="field col-12 sm:col-6 lg:col-4">
+      <label class="block font-bold mb-2" for="locale-user"> Patrulla </label>
+      <p-select
+        [options]="patrullas"
+        formControlName="patrulla"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Selecciona patrulla"
+        class="w-full md:w-56"
+      />
+      @if( hasError('patrulla')){
+      <p-message severity="error" variant="simple" size="small"
+        >La patrulla es requerida</p-message
+      >
+      }
+    </div>
+    <div class="field col-12 sm:col-6 lg:col-4">
+      <label class="block font-bold mb-2" for="locale-user"> Accion </label>
+      <p-select
+        [filter]="true"
+        [options]="acciones"
+        formControlName="accion"
+        optionLabel="descripcion"
+        (onChange)="accionChange($event)"
+        placeholder="Selecciona accion"
+        class="w-full md:w-56"
+      />
+      @if( hasError('accion')){
+      <p-message severity="error" variant="simple" size="small"
+        >La Accion es requerida</p-message
+      >
+      }
+    </div>
+    <div class="field col-12 sm:col-6 lg:col-4">
+      <label class="block font-bold mb-2" for="locale-user"> Fecha </label>
+      <p-datepicker
+        formControlName="fecha"
+        class="w-12"
+        [firstDayOfWeek]="1"
+        dateFormat="dd/mm/yy"
+      />
+      @if( hasError('fecha')){
+      <p-message severity="error" variant="simple" size="small"
+        >La fecha es requerida</p-message
+      >
+      }
+    </div>
+    <div class="field col-12 w-12">
+      <label class="block font-bold mb-2" for="locale-user">
+        Descripcion Adicional
+      </label>
+      <input class="w-12" pInputText formControlName="descripcionAddicional" />
+    </div>
+    <div class="field col-12 sm:col-6 lg:col-4">
+      <label class="block font-bold mb-2" for="locale-user"> Puntos </label>
+      <p-inputnumber class="w-12" formControlName="puntos" />
+      @if( hasError('puntos')){
+      <p-message severity="error" variant="simple" size="small"
+        >Los puntos son requeridos</p-message
+      >
+      }
+    </div>
+    <div class="field col-12 sm:col-6 lg:col-4">
+      <label class="block font-bold mb-2" for="locale-user">
+        Multiplicador
+      </label>
+      <p-inputnumber class="w-12" formControlName="numero" />
+      @if( hasError('numero')){
+      <p-message severity="error" variant="simple" size="small"
+        >El multiplicadoor es requerido minimo 1</p-message
+      >
+      }
+    </div>
+    <div class="flex justify-content-end col-12 lg:col-4">
+      <p-button
+        severity="warn"
+        class="mx-2"
+        (onClick)="cleanForm()"
+        label="Limpiar"
+      />
+      <p-button
+        severity="success"
+        (onClick)="sendPuntosPatrulla()"
+        label="Enviar"
+      />
+    </div>
+  </div>
+</form>
+}
