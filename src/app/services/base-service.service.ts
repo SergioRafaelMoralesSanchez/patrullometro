@@ -10,8 +10,7 @@ import {
   getDocs,
   getFirestore,
   query,
-  updateDoc,
-  where
+  updateDoc
 } from 'firebase/firestore'
 import { Nullable } from 'primeng/ts-helpers'
 import { appFirebase } from '../../main'
