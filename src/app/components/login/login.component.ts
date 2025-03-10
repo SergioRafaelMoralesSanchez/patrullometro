@@ -50,10 +50,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    this.messageService.add({
-      severity: 'info',
-      summary: 'HOLA',
-    });
     this.loginForm?.markAsDirty();
     this.loginForm?.markAllAsTouched();
     if (this.loginForm.valid) {

@@ -23,6 +23,7 @@ import {
 } from '../tabla-puntos/tabla-puntos.model';
 
 import { DatePickerModule } from 'primeng/datepicker';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-add-puntos-patrulla',
@@ -50,6 +51,7 @@ export class AddPuntosPatrullaComponent implements OnInit {
     private readonly patrullasService: PatrullasService,
     private readonly accionesService: AccionesService,
     private readonly fb: FormBuilder,
+    private readonly messageService: MessageService,
     @Inject(LOCALE_ID) private readonly locale: string
   ) {}
 
@@ -78,23 +80,27 @@ export class AddPuntosPatrullaComponent implements OnInit {
     this.getFormControl('puntos')?.setValue(accion.value.puntos);
   }
 
-  sendPuntosPatrulla() {
+  async sendPuntosPatrulla() {
     this.puntosForm?.markAsDirty();
     this.puntosForm?.markAllAsTouched();
     if (this.puntosForm?.valid) {
       const { patrulla, accion, fecha, puntos, descripcionAddicional, numero } =
-        this.puntosForm.getRawValue();
+        this.puntosForm.value;
       const puntosPatrulla: PuntosPatrullasDTO = {
         patrulla,
-        accion,
+        accion: accion?.id,
         puntos,
         descripcionAddicional,
         fecha: formatDate(fecha, 'dd/MM/yyyy', this.locale),
       };
 
       for (let i = 0; i < numero; i++) {
-        this.puntosPatrullaService.addDoc(puntosPatrulla);
+        await this.puntosPatrullaService.addDoc(puntosPatrulla);
       }
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Puntos añadidos',
+      });
     }
   }
 
