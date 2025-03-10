@@ -1,67 +1,122 @@
-import { CommonModule } from '@angular/common'
-import { Component, OnInit } from '@angular/core'
-import { FormsModule } from '@angular/forms'
-import { ButtonModule } from 'primeng/button'
-import { InputNumberModule } from 'primeng/inputnumber'
-import { SelectModule } from 'primeng/select'
-import { AccionesService } from '../../services/acciones.service'
-import { PatrullasService } from '../../services/patrullas.service'
-import { PuntosPatrullaService } from '../../services/puntos-patrulla.service'
+import { CommonModule, formatDate } from '@angular/common';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { SelectChangeEvent, SelectModule } from 'primeng/select';
+import { Nullable } from 'primeng/ts-helpers';
+import { AccionesService } from '../../services/acciones.service';
+import { PatrullasService } from '../../services/patrullas.service';
+import { PuntosPatrullaService } from '../../services/puntos-patrulla.service';
 import {
   Accion,
   Patrulla,
-  PuntosPatrullasDTO
-} from '../tabla-puntos/tabla-puntos.model'
+  PuntosPatrullasDTO,
+} from '../tabla-puntos/tabla-puntos.model';
+
+import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-add-puntos-patrulla',
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     SelectModule,
     InputNumberModule,
-    ButtonModule
+    InputTextModule,
+    ButtonModule,
+    DatePickerModule,
+    MessageModule,
   ],
   templateUrl: './add-puntos-patrulla.component.html',
-  styleUrl: './add-puntos-patrulla.component.css'
+  styleUrl: './add-puntos-patrulla.component.css',
 })
 export class AddPuntosPatrullaComponent implements OnInit {
-  patrullas: Patrulla[] = []
-  acciones: Accion[] = []
+  patrullas: Patrulla[] = [];
+  acciones: Accion[] = [];
 
-  patrulla: string | undefined
-  accion: Accion | undefined
-  puntos: number = 1
-  numero: number = 1
-  descripcionAddicional: string = ''
-  constructor (
-    private puntosPatrullaService: PuntosPatrullaService,
-    private patrullasService: PatrullasService,
-    private accionesService: AccionesService
+  puntosForm: Nullable<FormGroup>;
+
+  constructor(
+    private readonly puntosPatrullaService: PuntosPatrullaService,
+    private readonly patrullasService: PatrullasService,
+    private readonly accionesService: AccionesService,
+    private readonly fb: FormBuilder,
+    @Inject(LOCALE_ID) private readonly locale: string
   ) {}
 
-  async ngOnInit (): Promise<void> {
-    this.patrullas = await this.patrullasService.getAll()
-    this.acciones = await this.accionesService.getAll()
+  ngOnInit(): void {
+    this.setForm();
+    this.getData();
   }
 
-  accionChange (accion: Accion) {
-    this.puntos = accion.puntos
+  setForm() {
+    this.puntosForm = this.fb.group({
+      patrulla: [null, Validators.required],
+      accion: [null, Validators.required],
+      fecha: [new Date(), Validators.required],
+      descripcionAddicional: [],
+      puntos: [null, Validators.required],
+      numero: [1, Validators.min(1)],
+    });
   }
 
-  sendPuntosPatrulla () {
-    if (this.patrulla && this.accion) {
+  async getData() {
+    this.patrullas = await this.patrullasService.getAll();
+    this.acciones = await this.accionesService.getAll();
+  }
+
+  accionChange(accion: SelectChangeEvent) {
+    this.getFormControl('puntos')?.setValue(accion.value.puntos);
+  }
+
+  sendPuntosPatrulla() {
+    this.puntosForm?.markAsDirty();
+    this.puntosForm?.markAllAsTouched();
+    if (this.puntosForm?.valid) {
+      const { patrulla, accion, fecha, puntos, descripcionAddicional, numero } =
+        this.puntosForm.getRawValue();
       const puntosPatrulla: PuntosPatrullasDTO = {
-        patrulla: this.patrulla,
-        accion: this.accion.id!,
-        puntos: this.puntos,
-        descripcionAddicional: this.descripcionAddicional,
-        fecha: '08/03/2025'
-      }
+        patrulla,
+        accion,
+        puntos,
+        descripcionAddicional,
+        fecha: formatDate(fecha, 'dd/MM/yyyy', this.locale),
+      };
 
-      for (let i = 0; i < this.numero; i++) {
-        this.puntosPatrullaService.addDoc(puntosPatrulla)
+      for (let i = 0; i < numero; i++) {
+        this.puntosPatrullaService.addDoc(puntosPatrulla);
       }
     }
+  }
+
+  getFormControl(name: string): Nullable<FormControl> {
+    return this.puntosForm?.get(name) as FormControl;
+  }
+
+  cleanForm() {
+    this.puntosForm?.reset();
+    this.puntosForm?.markAsPristine();
+    this.puntosForm?.markAsUntouched();
+    this.puntosForm?.patchValue({
+      fecha: new Date(),
+      numero: 1,
+    });
+  }
+
+  hasError(name: string): boolean {
+    return (
+      (this.getFormControl(name)?.errors &&
+        this.getFormControl(name)?.touched) ??
+      false
+    );
   }
 }

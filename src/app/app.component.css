@@ -1,3 +1,11 @@
 :host ::ng-deep .app-patrullometro {
   font-family: sans-serif !important;
+
+  .p-overlay {
+    max-width: 100%;
+  }
+
+  .p-select-option {
+    white-space: normal;
+  }
 }

@@ -1,19 +1,23 @@
-import { CommonModule } from '@angular/common'
-import { Component, OnInit } from '@angular/core'
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators
-} from '@angular/forms'
-import { Router } from '@angular/router'
-import { ButtonModule } from 'primeng/button'
-import { CardModule } from 'primeng/card'
-import { DividerModule } from 'primeng/divider'
-import { InputTextModule } from 'primeng/inputtext'
-import { RippleModule } from 'primeng/ripple'
-import { ToastModule } from 'primeng/toast'
-import { AuthService } from '../../services/auth.service'
+  Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { RippleModule } from 'primeng/ripple';
+import { Nullable } from 'primeng/ts-helpers';
+import { AuthService } from '../../services/auth.service';
+import { MessageService } from 'primeng/api';
+import { AppRoutes } from '../../app.routes';
 @Component({
   selector: 'app-login',
   imports: [
@@ -22,50 +26,64 @@ import { AuthService } from '../../services/auth.service'
     DividerModule,
     InputTextModule,
     RippleModule,
-    ToastModule,
     ReactiveFormsModule,
-    CommonModule
+    MessageModule,
+    CommonModule,
   ],
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {
-  error = ''
-  loginForm!: FormGroup
-  loading = false
-  returnUrl!: string
-  submitted!: boolean
+  loginForm!: FormGroup;
+  loading = false;
+  returnUrl!: string;
+  submitted!: boolean;
 
-  constructor (
-    private authService: AuthService,
-    private formBuilder: FormBuilder,
-    private router: Router
-  ) {
-    if (this.authService.user) {
-      this.router.navigate([''])
+  constructor(
+    private readonly authService: AuthService,
+    private readonly fb: FormBuilder,
+    private readonly router: Router,
+    private readonly messageService: MessageService
+  ) {}
+
+  get f() {
+    return this.loginForm.controls;
+  }
+
+  onSubmit() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'HOLA',
+    });
+    this.loginForm?.markAsDirty();
+    this.loginForm?.markAllAsTouched();
+    if (this.loginForm.valid) {
+      this.authService.signInWithEmailAndPassword(
+        this.f['email'].value,
+        this.f['password'].value,
+        this.messageService
+      );
     }
   }
 
-  get f () {
-    return this.loginForm.controls
-  }
-
-  onSubmit () {
-    this.submitted = true
-    if (this.loginForm.invalid) {
-      return
+  ngOnInit(): void {
+    if (this.authService.isAuthorithed()) {
+      this.router.navigate([AppRoutes.INICI]);
     }
-    this.loading = true
-
-    this.authService.signInWithEmailAndPassword(
-      this.f['username'].value,
-      this.f['password'].value
-    )
+    this.loginForm = this.fb.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+    });
   }
 
-  ngOnInit (): void {
-    this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-    })
+  getFormControl(name: string): Nullable<FormControl> {
+    return this.loginForm?.get(name) as FormControl;
+  }
+
+  hasError(name: string): boolean {
+    return (
+      (this.getFormControl(name)?.errors &&
+        this.getFormControl(name)?.touched) ??
+      false
+    );
   }
 }
