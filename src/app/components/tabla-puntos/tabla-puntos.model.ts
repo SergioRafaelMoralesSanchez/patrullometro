@@ -1,26 +1,27 @@
 export interface PuntosPatrullasDTO {
-  id?: string
-  patrulla: string
-  accion: string
-  puntos: number
-  descripcionAddicional?: string
-  fecha: string
+  id?: string;
+  patrulla: string;
+  accion: string;
+  puntos: number;
+  descripcionAddicional?: string;
+  fecha: string;
 }
 export interface PuntosPatrullas {
-  patrulla: Patrulla
-  accion: Accion
-  puntos: number
-  fecha: string
+  patrulla: Patrulla;
+  accion: Accion;
+  puntos: number;
+  descripcionAddicional?: string;
+  fecha: string;
 }
 
 export interface Patrulla {
-  id: string
-  name: string
-  nombreImagen: string
+  id: string;
+  name: string;
+  nombreImagen: string;
 }
 
 export interface Accion {
-  id: string
-  descripcion: string
-  puntos: number
+  id: string;
+  descripcion: string;
+  puntos: number;
 }
