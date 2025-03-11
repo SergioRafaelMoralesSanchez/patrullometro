@@ -1,5 +1,5 @@
-import { EnvironmentPlugin } from 'webpack'
+import { EnvironmentPlugin } from 'webpack';
 
 module.exports = {
-  plugins: [new EnvironmentPlugin(['apiKeyPatrullometro'])]
-}
+  plugins: [new EnvironmentPlugin(['firebaseConfig'])],
+};
