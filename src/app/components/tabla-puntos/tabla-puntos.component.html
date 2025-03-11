@@ -39,22 +39,42 @@
   >
     <ng-template #header>
       <tr>
-        <th>Patrulla</th>
-        <th>Accion</th>
-        <th>Puntos</th>
-        <th>Fecha</th>
+        <th class="mobile" id="patrulla-accion">
+          <div class="my-2">Patrulla</div>
+          <div class="my-2">Accion</div>
+        </th>
+        <th class="mobile" id="patrulla-puntos">
+          <div class="my-2">Fecha</div>
+          <div class="my-2">Puntos</div>
+        </th>
+        <!-- PC -->
+        <th class="pc" id="patrulla">Patrulla</th>
+        <th class="pc" id="accion">Accion</th>
+        <th class="pc" id="puntos">Ptos</th>
+        <th class="pc" id="fecha">Fecha</th>
       </tr>
     </ng-template>
     <ng-template #body let-punto>
       <tr>
-        <td>{{ punto.patrulla.name }}</td>
-        <td style="max-width: 50px">
-          {{ punto.accion.descripcion }}
-          @if(punto.descripcionAddicional){ ({{ punto.descripcionAddicional }})
-          }
+        <td class="mobile">
+          <div class="my-2">{{ punto.patrulla.name }}</div>
+          <div class="my-2">
+            {{ formatDescripcion(punto) }}
+          </div>
         </td>
-        <td>{{ punto.puntos }}</td>
-        <td>{{ punto.fecha }}</td>
+        <td class="mobile">
+          <div class="my-2">{{ punto.fecha }}</div>
+          <div class="my-2">
+            {{ punto.puntos }}
+          </div>
+        </td>
+        <!-- PC -->
+        <td class="pc">{{ punto.patrulla.name }}</td>
+        <td class="pc">
+          {{ formatDescripcion(punto) }}
+        </td>
+        <td class="pc">{{ punto.puntos }}</td>
+        <td class="pc">{{ punto.fecha }}</td>
       </tr>
     </ng-template>
   </p-table>

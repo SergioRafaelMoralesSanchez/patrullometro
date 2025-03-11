@@ -3,6 +3,7 @@ import { AccionesService } from '../../services/acciones.service';
 import { PatrullasService } from '../../services/patrullas.service';
 import { PuntosPatrullaService } from '../../services/puntos-patrulla.service';
 import { RankingComponent } from '../ranking/ranking.component';
+import { SpinnerComponent } from '../spinner/spinner.component';
 import { TablaPuntosComponent } from '../tabla-puntos/tabla-puntos.component';
 import {
   Accion,
@@ -12,7 +13,7 @@ import {
 
 @Component({
   selector: 'app-patrullometro',
-  imports: [RankingComponent, TablaPuntosComponent],
+  imports: [RankingComponent, TablaPuntosComponent, SpinnerComponent],
   templateUrl: './patrullometro.component.html',
 })
 export class PatrullometroComponent implements OnInit {
