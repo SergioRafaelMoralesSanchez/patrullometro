@@ -7,6 +7,7 @@ export interface PuntosPatrullasDTO {
   fecha: string;
 }
 export interface PuntosPatrullas {
+  id: string;
   patrulla: Patrulla;
   accion: Accion;
   puntos: number;
