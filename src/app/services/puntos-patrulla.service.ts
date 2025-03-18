@@ -31,6 +31,10 @@ export class PuntosPatrullaService extends BaseService<PuntosPatrullasDTO> {
         puntos: punto.puntos,
         descripcionAddicional: punto.descripcionAddicional
       }))
-      .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime())
+      .sort(
+        (a, b) =>
+          new Date(b.fecha).getTime() - new Date(a.fecha).getTime() ||
+          a.accion.descripcion.localeCompare(b.accion.descripcion)
+      )
   }
 }
