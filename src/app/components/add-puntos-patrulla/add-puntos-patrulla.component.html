@@ -90,3 +90,11 @@
   </div>
 </form>
 }
+@if(puntosPatrullas.length){
+  <app-tabla-puntos
+  [acciones]="acciones"
+  [patrullas]="patrullas"
+  [puntosPatrullasRaw]="puntosPatrullas"
+  [hasAcciones]="true"
+></app-tabla-puntos>
+}
