@@ -35,12 +35,7 @@ export class TablaPuntosComponent {
   constructor (
     private readonly puntosPatrullaService: PuntosPatrullaService,
     private readonly messageService: MessageService
-  ) {
-    this.messageService.add({
-      severity: 'warn',
-      summary: 'Puntos eliminados'
-    })
-  }
+  ) {}
 
   onPatrullaChange (change?: SelectChangeEvent) {
     if (!this.accion) {
