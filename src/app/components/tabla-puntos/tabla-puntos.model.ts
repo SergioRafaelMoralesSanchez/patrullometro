@@ -25,4 +25,5 @@ export interface Accion {
   id?: string
   descripcion: string
   puntos: number
+  canDelete?: boolean
 }

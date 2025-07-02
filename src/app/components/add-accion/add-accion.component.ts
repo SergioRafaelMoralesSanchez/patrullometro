@@ -17,7 +17,8 @@ import { SelectModule } from 'primeng/select'
 import { TableModule } from 'primeng/table'
 import { Nullable } from 'primeng/ts-helpers'
 import { AccionesService } from '../../services/acciones.service'
-import { Accion } from '../tabla-puntos/tabla-puntos.model'
+import { PuntosPatrullaService } from '../../services/puntos-patrulla.service'
+import { Accion, PuntosPatrullasDTO } from '../tabla-puntos/tabla-puntos.model'
 
 @Component({
   selector: 'app-add-accion',
@@ -36,10 +37,12 @@ import { Accion } from '../tabla-puntos/tabla-puntos.model'
 })
 export class AddAccionComponent implements OnInit {
   acciones: Accion[] = []
-
+  puntosPatrullas: PuntosPatrullasDTO[] = []
   accionForm: Nullable<FormGroup>
+  accionEdited = false
 
   constructor (
+    private readonly puntosPatrullaService: PuntosPatrullaService,
     private readonly accionesService: AccionesService,
     private readonly fb: FormBuilder,
     private readonly messageService: MessageService,
@@ -53,13 +56,52 @@ export class AddAccionComponent implements OnInit {
 
   setForm () {
     this.accionForm = this.fb.group({
+      id: [],
       descripcion: [null, Validators.required],
       puntos: [null, Validators.required]
     })
   }
 
   async getData () {
+    this.puntosPatrullas = await this.puntosPatrullaService.getAll()
     this.acciones = await this.accionesService.getAll()
+    this.acciones.forEach(accion => {
+      const puntosPatrulla = this.puntosPatrullas.find(
+        p => p.accion === accion.id
+      )
+      accion.canDelete = !puntosPatrulla
+    })
+  }
+
+  setEditAccion (accion: Accion) {
+    debugger
+    this.accionEdited = true
+    this.accionForm?.patchValue({
+      id: accion?.id,
+      descripcion: accion?.descripcion,
+      puntos: accion?.puntos
+    })
+  }
+
+  editAccion () {
+    const { id, descripcion, puntos } = this.accionForm?.value
+    const accionUpdated: Accion = {
+      id,
+      descripcion,
+      puntos
+    }
+    accionUpdated.id &&
+      this.accionesService
+        .updateDoc(accionUpdated.id, accionUpdated)
+        .then(() => {
+          this.accionEdited = false
+          this.cleanForm()
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Accion actualizada'
+          })
+          this.getData()
+        })
   }
 
   deleteAccion (accion: Accion) {
@@ -73,7 +115,7 @@ export class AddAccionComponent implements OnInit {
       })
   }
 
-  async sendAccion () {
+  sendAccion () {
     this.accionForm?.markAsDirty()
     this.accionForm?.markAllAsTouched()
     if (this.accionForm?.valid) {
@@ -83,14 +125,15 @@ export class AddAccionComponent implements OnInit {
         puntos
       }
 
-      await this.accionesService.addDoc(accion)
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Accion añadida'
-      })
+      this.accionesService.addDoc(accion).then(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Accion añadida'
+        })
 
-      this.getData()
-      this.cleanForm()
+        this.getData()
+        this.cleanForm()
+      })
     }
   }
 
@@ -99,6 +142,7 @@ export class AddAccionComponent implements OnInit {
   }
 
   cleanForm () {
+    this.accionEdited = false
     this.accionForm?.reset()
     this.accionForm?.markAsPristine()
     this.accionForm?.markAsUntouched()
