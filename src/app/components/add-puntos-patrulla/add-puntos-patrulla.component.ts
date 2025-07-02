@@ -97,7 +97,7 @@ export class AddPuntosPatrullaComponent implements OnInit {
         accion: accion?.id,
         puntos,
         descripcionAddicional,
-        fecha: formatDate(fecha, 'dd/MM/yyyy', this.locale)
+        fecha: formatDate(fecha, 'yyyy-MM-dd', this.locale)
       }
 
       for (let i = 0; i < numero; i++) {

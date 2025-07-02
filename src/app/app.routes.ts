@@ -1,34 +1,40 @@
-import { Routes } from '@angular/router';
-import { AddPuntosPatrullaComponent } from './components/add-puntos-patrulla/add-puntos-patrulla.component';
-import { LoginComponent } from './components/login/login.component';
-import { PatrullometroComponent } from './components/patrullometro/patrullometro.component';
-import { AuthGuard } from './guards/auth.guard';
+import { Routes } from '@angular/router'
+import { AddAccionComponent } from './components/add-accion/add-accion.component'
+import { AddPuntosPatrullaComponent } from './components/add-puntos-patrulla/add-puntos-patrulla.component'
+import { LoginComponent } from './components/login/login.component'
+import { PatrullometroComponent } from './components/patrullometro/patrullometro.component'
+import { AuthGuard } from './guards/auth.guard'
 
 export enum AppRoutes {
   INICI = '',
   PATRULLOMETRO = 'patrullometro',
   PUNTOS_PATRULLA = 'puntos',
   ACCIONES = 'acciones',
-  LOGIN = 'login',
+  LOGIN = 'login'
 }
 
 export const routes: Routes = [
   {
     path: '',
     redirectTo: AppRoutes.PATRULLOMETRO,
-    pathMatch: 'full',
+    pathMatch: 'full'
   },
   {
     path: AppRoutes.LOGIN,
-    component: LoginComponent,
+    component: LoginComponent
   },
   {
     path: AppRoutes.PATRULLOMETRO,
-    component: PatrullometroComponent,
+    component: PatrullometroComponent
   },
   {
     path: AppRoutes.PUNTOS_PATRULLA,
     component: AddPuntosPatrullaComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard]
   },
-];
+  {
+    path: AppRoutes.ACCIONES,
+    component: AddAccionComponent,
+    canActivate: [AuthGuard]
+  }
+]
