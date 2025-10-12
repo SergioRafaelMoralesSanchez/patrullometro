@@ -10,6 +10,6 @@ const firebaseConfig = {
   appId: process.env.appId,
 };
 
-const outputPath = path.join(__dirname, '../assets/firebase-config.json');
+const outputPath = path.join(__dirname, '../src/assets/firebase-config.json');
 fs.writeFileSync(outputPath, JSON.stringify(firebaseConfig, null, 2));
 console.log('Firebase config generated!');
