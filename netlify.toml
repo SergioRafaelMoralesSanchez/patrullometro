@@ -4,3 +4,4 @@
   status = 200
 [build]
   command = "node scripts/generate-firebase-config.js && npm run build"
+  publish = "dist/patrullometro"
